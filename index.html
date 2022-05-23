@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click-Click</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="icon" href="./images/Fashion.jpg" type="image/jpg">
+</head>
+<body>
+    <div class="mount"></div>
+    <div class="player"></div>
+      <button id="rl" onclick="load();"></button>
+    <div id="bdw" class="bird"></div>
+    <div id="bdw2" class="bird"></div>
+
+    <div class="cloudcon" id="badal">
+         <div class="box">
+            <div class="cloud  "></div>
+            <div class="cloud  cd1"></div>
+            <div class="cloud  cd2"></div>
+            <div class="cloud  cd3"></div>
+         </div>
+         <div class="cdbox1 box">
+            <div class="cloud  "></div>
+            <div class="cloud  cd1"></div>
+            <div class="cloud  cd2"></div>
+            <div class="cloud  cd3"></div>
+         </div>
+         <div class="cdbox2 box">
+            <div class="cloud  "></div>
+            <div class="cloud  cd1"></div>
+            <div class="cloud  cd2"></div>
+            <div class="cloud  cd3"></div>
+         </div>
+    </div>
+    
+    <script>
+      const body = document.querySelector('body');
+      const player = document.querySelector('.player');
+      const mount = document.querySelector('.mount');
+      const bird = document.querySelector('#bdw');
+      const bird2 = document.querySelector('#bdw2');
+      var con = 1;
+      var over = 1;
+      
+      body.addEventListener('click', play);
+      setInterval(checkcon, 10);
+
+      setInterval(checkout, 10);
+      setInterval(checkoutb2, 10);
+      const btop = ["100px","450px","200px","500px","50px","20px","230px","300px","420px","480px"];
+      setInterval(() => {
+         let dex = Math.floor(Math.random()*10);
+         console.log(dex);
+         if(over) bird.style.top = btop[dex];
+      }, 6000);
+      setTimeout(() => {
+         setInterval(() => {
+            let dex = Math.floor(Math.random()*10);
+            console.log(dex);
+            if(over) bird2.style.top = btop[dex];
+         }, 7000);
+      }, 2000);
+
+
+      function load(){
+         mount.style.left = "-70px";
+         location.reload();
+         return false;
+      }
+
+      function checkcon(){
+         let top = window.getComputedStyle(player).top;
+         top = top.split('px')[0];
+         top = Number(top);
+         if( top < -80 || top > 515)
+            out();
+      }
+
+      function checkout(){
+         let plyrtop = window.getComputedStyle(player).top;
+         plyrtop = plyrtop.split('px')[0];
+         plyrtop = Number(plyrtop);
+         let bpos = window.getComputedStyle(bird).left;
+         let btop = window.getComputedStyle(bird).top;
+
+         btop = btop.split('px')[0];
+         bpos = bpos.split('px')[0];
+         btop = Number(btop);
+         bpos = Number(bpos);
+         bpos = Math.floor(bpos);
+         plyrtop = Math.floor(plyrtop);
+         if(bpos < 240 && bpos > 140)
+         {
+         if(plyrtop > (btop - 125) && plyrtop < (btop -27))
+                   out();
+         }
+      }
+
+      function checkoutb2(){
+         let plyrtop = window.getComputedStyle(player).top;
+         plyrtop = plyrtop.split('px')[0];
+         plyrtop = Number(plyrtop);
+         let bpos = window.getComputedStyle(bird2).left;
+         let btop = window.getComputedStyle(bird2).top;
+
+         btop = btop.split('px')[0];
+         bpos = bpos.split('px')[0];
+         btop = Number(btop);
+         bpos = Number(bpos);
+         bpos = Math.floor(bpos);
+         plyrtop = Math.floor(plyrtop);
+         if(bpos < 240 && bpos > 140)
+         {
+         if(plyrtop > (btop - 125) && plyrtop < (btop -27))
+                   out();
+         }
+      }
+
+      function out(){
+         over = 0;
+         bird.style.animationPlayState = "paused";
+         player.style.animationPlayState = "paused";
+         player.style.backgroundImage = "url('./images/out2.png')";
+         player.style.left = "185px";
+         mount.style.animationPlayState = "paused";
+         mount.style.left = window.getComputedStyle(mount).left;
+         mount.classList.remove('mounthide');
+         document.querySelector('#rl').style.visibility = "visible";
+         document.querySelector('#rl').innerHTML = "Reload";
+         document.getElementById("badal").style.animationPlayState = "paused";
+         document.getElementById("bdw2").style.animationPlayState = "paused";
+      }
+
+      function play()
+      { 
+        if(con == 1){
+          mount.classList.add('mounthide');
+          setTimeout(() => { 
+          if(over){ mount.style.visibility = 'hidden'; }
+             }, 1999);
+          player.classList.add('playerup');
+          con = 0;
+         } else {
+           body.removeEventListener('click', play);
+           setTimeout(() => { body.addEventListener('click', play); },400);
+           let top = window.getComputedStyle(player).top;
+           player.style.setProperty('--top', top);
+           player.classList.remove('playerup');
+           setTimeout(() => { player.classList.add('playerup'); }, 1);
+         }
+      }
+    </script>
+</body>  
+</html>
